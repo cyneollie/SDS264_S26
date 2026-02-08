@@ -140,7 +140,8 @@ vaccine_data |>
   summarize(IQR_Biden = IQR(perc_Biden)) |>
   mutate(big_states = fct_reorder(big_states, IQR_Biden)) |>
   ggplot() + 
-    geom_point(aes(x = IQR_Biden, y = big_states))
+    geom_point(aes(x = IQR_Biden, y = big_states)) +
+  theme_classic
 ```
 
 
