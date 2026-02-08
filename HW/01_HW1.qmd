@@ -109,7 +109,8 @@ vaccine_data |>
   mutate(rural_urban_code = as.factor(rural_urban_code)) |>
   ggplot(aes(x = rural_urban_code, y = perc_complete_vac)) +
   geom_boxplot() +
-  theme_classic()
+  theme_classic() +
+  scale_fill_brewer(palette = 4)
 ```
 
 ```{r}
@@ -123,7 +124,8 @@ vaccine_data |>
                       (y = rural_urban_code,
                         x = perc_complete_vac, 
                         fill = rural_urban_code), alpha = 0.3) +
-  theme_classic()
+  theme_classic() +
+  scale_fill_brewer(palette = 4)
 ```
 
 ```{r}
@@ -131,7 +133,8 @@ vaccine_data |>
   mutate(rural_urban_code = as.factor(rural_urban_code)) |>
   ggplot(aes(fill = rural_urban_code, x = perc_complete_vac)) +
   geom_area(stat = "bin", alpha = 0.6) +
-  theme_classic()
+  theme_classic() +
+  scale_fill_brewer(palette = 4)
 ```
 
 I really like the classic boxplot since it is the most familiar and easiest to interpret. Besides that, it also shows us a lot of summary statistics details that other plots are unable to show. From the boxplot, I can learn that the rural urban code 1 has the highest vaccination completion percentage. It makes sense since it refers to the metropolitan area, where there are more people and high accessibility to vaccination services. The median however, do not differ greatly from other rural urban codes. All codes also appear to have roughly similar data variability, though some of them might also have extreme outliers, which can be noticed in rural urban code 2. 
