@@ -77,7 +77,18 @@ Describe which plot you prefer and why.  What can you learn from your preferred 
 
 a) Fill in the blanks below to produce a segmented bar plot with regions ordered from highest proportion above the median to lowest.
 
+
+```{r}
+
+```
+
+
 b) Create a table of proportions by region to illustrate that your bar plot in (a) is in the correct order (you should find two regions that are *really* close when you just try to eyeball differences).
+
+```{r}
+
+```
+
 
 c) Explain why we can replace `fct_relevel(region, FILL IN CODE)` with
 
@@ -95,7 +106,18 @@ vaccine_data |>
   mutate(region_sort = fct_relevel(region, median_HHincome_2019)) |>
   ggplot(mapping = aes(x = region_sort, fill = HHincome_vs_national)) +
     geom_bar(position = "fill")
+
+vaccine_data |>
+  mutate(HHincome_vs_national = ifelse(median_HHincome_2019 < 69560, "low", "high")) |>
+  mutate(region_sort = 
+           fct_reorder(region, 
+                       median_HHincome_2019 < 69560, 
+                       .fun = mean)) |>
+  ggplot(mapping = aes(x = region_sort, fill = HHincome_vs_national)) +
+    geom_bar(position = "fill")
 ```
+
+median_HHincome_2019 < 69560 is a logical statement, producing TRUE/FALSE
 
 
 3. We want to examine the distribution of total county populations and then see how it's related to vaccination rates.

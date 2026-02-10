@@ -80,6 +80,18 @@ vaccine_data |>
        y = "Complete Vaccination in Percentage",
        color = "State",
        title = "Relationship between Votes for Biden and Complete Vaccination of Counties in the Midwest")
+
+OR
+
+vaccine_data |>
+  filter(state %in% c("Minnesota", "Iowa", "Wisconsin", "North Dakota", "South Dakota")) |>
+  ggplot(aes(x = perc_Biden, y = perc_complete_vac, color = fct_reorder2(state, perc_Biden, perc_complete_vac))) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(x = "Votes for Biden in Percentage" ,
+       y = "Complete Vaccination in Percentage",
+       color = "State",
+       title = "Relationship between Votes for Biden and Complete Vaccination of Counties in the Midwest")
 ```
 
 
@@ -157,7 +169,9 @@ vaccine_data |>
     geom_point(aes(x = IQR_Biden, y = big_states))
 ```
 
+
 We can conclude that the IQR for Biden Votes in Virginia is the highest among other big states at around 25, which is the range of the middle 50% for the state. As Virginia has the highest IQR, that also indicates that the voting percentage data has a great variability and dispersion, especially when compared to states like Missouri and Tennessee, which have the second lowest and lowest IQR, respectively. These two states, also alongside with Kentucky which has IQR below 10, indicates that the data is clustered near the median. 
+
 
 6. In this question we will focus only on the 12 states in the Midwest (i.e. where region == "Midwest").
 
