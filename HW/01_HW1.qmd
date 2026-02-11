@@ -185,42 +185,23 @@ a) Create a tibble with the following information for each state.  Order states 
 b) Use your tibble in (a) to produce a plot of the relationship between proportion of Metro counties and median unemployment rate.  Points should be colored by the number of different `rural_urban_code`s in a state, but a single linear trend should be fit to all points.  What can you conclude from the plot?
 
 ```{r}
-counting <- vaccine_data |>
-  filter(region == "Midwest") |>
-  count(state, rural_urban_code)
-
-
 vaccine_data |>
   filter(region == "Midwest") |>
- # group_by(state) |>
+  group_by(state) |>
   summarise(total_pop = sum(tot_pop),
     prop_metro = mean(metro_status == "Metro"),
-         median_un = median(unemployment_rate_2020)) |>
+         median_un = median(unemployment_rate_2020),
+    n = n_distinct(rural_urban_code)) |>
   arrange(desc(total_pop)) |>
-  left_join(counting, join_by(state)) |>
-  mutate(rural_urban_code = as.factor(rural_urban_code)) |>
+  mutate(n = as.factor(n)) |>
   ggplot(aes(x = prop_metro, 
              y = median_un)) +
-  geom_jitter(aes(color = rural_urban_code), height = 0.3, width = 0.0019) +
-  geom_smooth(method = lm, se = FALSE)
-  
-
-vaccine_data |>
-  filter(region == "Midwest") |>
-  group_by(state, rural_urban_code) |>
-  summarise(total_pop = sum(tot_pop),
-    prop_metro = mean(metro_status == "Metro"),
-         median_un = median(unemployment_rate_2020)) |>
-  arrange(desc(total_pop)) |>
-  mutate(rural_urban_code = as.factor(rural_urban_code)) |>
-  ggplot(aes(x = prop_metro, 
-             y = median_un)) +
-  geom_jitter(aes(color = rural_urban_code), height = 0.3, width = 0.0019) +
+  geom_jitter(aes(color = n), height = 0.3, width = 0.0019) +
   geom_smooth(method = lm, se = FALSE)
 ```
 
 
-????????????????????????????????????????????
+Generally, the higher the proportion number of counties that are categorised as metro in a state, the higher the median unemployment rate is, as what we can see from the blue linear line. However, the different colors of the dots (where the dots represent different states), do not have a correlation with metro proportion or unemployment rate, because they are all scattered randomly across the graph. So the number of different rural urban codes in a state does not have anything to do with the relationship between proportion of metro counties and median unemployment rate. 
 
 
 In this next section, we consider a few variables that could have been included in our data set, but were NOT.  Thus, you won't be able to write and test code, but you nevertheless should be able to use your knowledge of the tidyverse to answer these questions.
@@ -351,5 +332,3 @@ will have some NA values, because we are not removing the NA values from people_
 d) What would happen if we replaced `fct_reorder2(state_lump, rural_urban_code, mean_people_per_MD)` with `state_lump`?
 
 the lines colour would not be ordered in a thoughtful way, in correspond to the legend. it will be harder for people to navigate what color represents what state. The state_lump legend would not be ordered based on the two numerical vectors: rural_urban_code and mean_people_per_MD. 
-
-???????????????????????????????????????
