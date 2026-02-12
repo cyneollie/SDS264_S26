@@ -16,7 +16,6 @@ You can download this .qmd file from [here](https://github.com/joeroith/264_spri
 
 library(tidyverse)
 library(ggplot2)
-vaccine_data <- read_csv("https://joeroith.github.io/264_spring_2025/Data/vaccinations_2021.csv")
 ```
 
 First, a little detour to describe several alternatives for reading in data:
@@ -70,6 +69,8 @@ A recent Stat 272 project examined determinants of covid vaccination rates at th
 a) A scatterplot with points and smoothers colored by state. Make sure the legend is ordered in a meaningful way, and include good labels on your axes and your legend. Also leave off the error bars from your smoothers.
 
 ```{r}
+vaccine_data <- read_csv("https://joeroith.github.io/264_spring_2026/Data/vaccinations_2021.csv")
+
 vaccine_data |>
   filter(state %in% c("Minnesota", "Iowa", "Wisconsin", "North Dakota", "South Dakota")) |>
   mutate(state = fct_reorder2(state, perc_Biden, perc_complete_vac)) |>
@@ -81,7 +82,7 @@ vaccine_data |>
        color = "State",
        title = "Relationship between Votes for Biden and Complete Vaccination of Counties in the Midwest")
 
-OR
+#OR
 
 vaccine_data |>
   filter(state %in% c("Minnesota", "Iowa", "Wisconsin", "North Dakota", "South Dakota")) |>
@@ -126,7 +127,6 @@ vaccine_data |>
 ```
 
 ```{r}
-install.packages("ggridges")
 library(ggridges)
 
 vaccine_data |>
