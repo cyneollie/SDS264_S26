@@ -9,3 +9,5 @@ editor: visual
 #### Thursday, Feb. 12 2026
 
 I'm ready!
+
+So now I'm writing using Github :)
