@@ -1,7 +1,6 @@
 ---
 title: "Strings: In-class Exercises (Part 2)"
-format:
-  html: default
+format: pdf
 editor_options: 
   chunk_output_type: console
 editor: 
@@ -47,58 +46,90 @@ spot_smaller <- spotify |>
     playlist_name
   )
 
+spot_smaller
+
+
 spot_smaller <- spot_smaller[c(5, 32, 49, 52, 83, 175, 219, 231, 246, 265), ]
 spot_smaller
 ```
 
-## Warm-up
-
-0.  Describe what EACH of the str\_ functions below does. Then, create a
-    new variable "month" which is the two digit month from
-    album_release_date
-
-```{r}
-spot_new <- spot_smaller |>
-  select(title, album_release_date) |>
-  mutate(title_length = str_length(title),
-         year = str_sub(album_release_date, 1, 4),
-         title_lower = str_to_lower(title),
-         album_release_date2 = str_replace_all(album_release_date, "-", "/"))
-spot_new
-         
-max_length <- max(spot_new$title_length)
-
-str_c("The longest title is", max_length, "characters long.", sep = " ")
-str_glue("The longest title is {max_length} characters long.")
-```
-
 ## Important functions for identifying strings which match
 
-str_view() : most useful for testing str_subset() : useful for printing
-matches to the console str_detect() : useful when working within a
-tibble
+str_view() : most useful for testing 
+str_subset() : useful for printing matches to the console 
+str_detect() : useful when working within a tibble
 
 1.  Identify the input type and output type for each of these examples:
 
 ```{r}
+#| eval: false
+
 str_view(spot_smaller$subgenre, "pop")
+# input = chr vector
+# output = chr vector using ANSI escapes
+
 typeof(str_view(spot_smaller$subgenre, "pop"))
+# input = any R object; in this case it is the result of str_view = vector
+# output = character string
+
 class(str_view(spot_smaller$subgenre, "pop"))
+# input = any R object; in this case it is the result of str_view = vector
+# output = character string
 
 str_view(spot_smaller$subgenre, "pop", match = NA)
+# based on the help document, match = NA will show all elements-- regardless if it matches the pattern or not. 
+# input = chr vector
+# output = chr vector using ANSI escapes
+
 str_view(spot_smaller$subgenre, "pop", html = TRUE)
+# input = chr vector
+# output = vector in HTML formatting/widget
 
 str_subset(spot_smaller$subgenre, "pop")
+# input = vector
+# output = vector
+# should both be character
 
 str_detect(spot_smaller$subgenre, "pop")
+# input = vector
+# vector = logical vector
 ```
 
 2.  Use str_detect to print the rows of the spot_smaller tibble
     containing songs that have "pop" in the subgenre. (i.e. make a new
     tibble with fewer rows)
 
+```{r}
+spot_smaller |>
+  filter(str_detect(subgenre, "pop"))
+
+spot_smaller |>
+  filter(str_extract(subgenre, "pop"))
+
+spot_smaller |>
+  filter(str_length(subgenre, "pop"))
+
+
+x <- c("\u6c49\u5b57", "\U0001f60a")
+str_view(x)
+str_width(x)
+str_length(x)
+```
+
 3.  Find the mean song title length for songs with "pop" in the subgenre
     and songs without "pop" in the subgenre.
+
+```{r}
+spot_smaller
+
+spot_smaller |>
+  mutate(sub_pop = 
+           ifelse(str_detect(subgenre, "pop"), 
+                  "Genre with pop", 
+                  "Genre without pop")) |>
+  group_by(sub_pop) |>
+  summarise(mean_title_length = mean(str_length(title)))
+```
 
 Producing a table like this would be great:
 
@@ -136,6 +167,14 @@ bigspotify <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience
 bigspotify
 ```
 
+```{r}
+bigspotify |>
+  filter(!is.na(track_name)) |>
+  select(track_name, playlist_genre, title_love) |>
+  group_by(playlist_genre) |>
+  summarise(prop_love = mean(title_love == "TRUE"))
+```
+
 ## Matching patterns with regular expressions
 
 |          |                                          |
@@ -146,11 +185,14 @@ bigspotify
 | `[^abc]` | anything EXCEPT a or b or c              |
 
 ```{r}
+#| eval: false
 # Guess the output!
 
 str_view(spot_smaller$artist, "^K")
 
 str_view(spot_smaller$album_release_date, "01$")
+str_view(spot_smaller$album_release_date, "01")
+str_view(spot_smaller$album_release_date, "[01]")
 
 str_view(spot_smaller$title, "^.. ")
 
@@ -169,6 +211,57 @@ str_view(spot_smaller$artist, "[^A-Za-z ]")
 -   Words where q is not followed by u. (are there any in `words`?)
 
 ```{r}
+#| eval: false
+
+str_view(stringr::words, "^y") 
+
+str_view(stringr::words, "x$")
+
+str_view(stringr::words, "^...$")
+
+str_view(stringr::words, "^.......")
+str_view(stringr::words, "^.{7}")
+
+str_view(stringr::words, "^[aiueo]") 
+
+str_view(stringr::words, "[^e]ed$")
+
+str_view(stringr::words, "q[^u]")
+
+fruit1 <- c("apple", "banana", "pear", "pineapple")
+fruit
+
+str_subset(fruit1, "apple")
+str_extract(fruit1, "apple")
+
+fruit2 <- c("pineapple loveapple", "banana", "pearapple", "pineapple and apple")
+str_view(fruit2, "apple")
+str_subset(fruit2, "apple")
+str_extract(fruit2, "apple")
+str_extract_all(fruit2, "apple")
+str_count(fruit2, "apple")
+str_length(fruit2)
+
+
+str_detect(fruit, "a")
+str_detect(fruit, "^a")
+str_detect(fruit, "a$")
+str_detect(fruit, "b")
+str_detect(fruit, "[aeiou]")
+str_detect("aecfg", letters)
+
+x <- "abcd ABCD 12345 -!@#%."
+str_view(x, "\\d")
+str_view(x, "\\d+")
+str_view(x, "d")
+
+
+
+```
+
+```{r}
+#| eval: false
+
 # Try using str_view() or str_subset()
 
 # For example, to find words with "tion" at any point, I could use:
@@ -185,6 +278,8 @@ str_subset(words, "tion")
 | `\\b` | any boundary: space, ., etc. |
 
 ```{r}
+#| eval: false
+
 str_view(spot_smaller$album_name, "\\d")
 str_view(spot_smaller$album_name, "\\s")
 str_view(spot_smaller$album_name, "\\b")
@@ -199,16 +294,51 @@ special meaning ... but `\` is itself a special character ... so we need
 two `\\`! (e.g. `\\$`, `\\.`, etc.)
 
 ```{r}
+#| eval: false
+
 str_view(spot_smaller$title, "$")
 str_view(spot_smaller$title, "\\$")
 ```
 
-6.  In bigspotify, how many track_names include a `$`? Be sure you print
-    the track_names you find and make sure the dollar sign is not just
-    in a featured artist!
+6.  In bigspotify, how many track_names include a `$`? Be sure you print the track_names you find and make sure the dollar sign is not just in a featured artist!
+    
 
-7.  In bigspotify, how many track_names include a dollar amount (a `$`
-    followed by a number).
+# NOTE, NOT ANSWER
+
+bigspotify |>
+  filter(str_detect(track_name, "\\$")) |>
+  filter(str_detect(track_name, [^feat])) |> will not work, because we are telling R that WE DO NOT WANT F, E, A, and T.
+  filter(str_detect(track_name, "(feat|with).*\\$")) i want anything with "feat" or "with" THEN any number or characters afterward, but IT HAS TO HAVE A DOLLAR SIGN AFTER SEEING FEAT OR WITH.
+  filter(str_detect())
+  select(track_name, track_artist) |>
+  drop_na(track_name) |>
+  count(str_detect(track_name, "$")) |>
+
+
+```{r}
+# REAL ANSWER
+bigspotify |>
+  filter(str_detect(track_name, "\\$")) |>
+  select(track_name, track_artist) |>
+  print(n = Inf)
+
+# how to do it with just for the title?
+
+# if we only want the dollar sign on the featured artist.
+bigspotify |>
+  filter(str_detect(track_name, "(feat|with).*\\$")) |>
+  select(track_name, track_artist) |>
+  print(n = Inf)
+```
+
+7.  In bigspotify, how many track_names include a dollar amount (a `$` followed by a number).
+
+```{r}
+bigspotify |>
+  filter(str_detect(track_name, "\\$\\d")) |>
+  select(track_name, track_artist)
+```
+
 
 ## Repetition
 
@@ -223,9 +353,17 @@ str_view(spot_smaller$title, "\\$")
 | `{n,m}` | between n and m times |
 
 ```{r}
+#| eval: false
 str_view(spot_smaller$album_name, "[A-Z]{2,}")
-
 str_view(spot_smaller$album_release_date, "\\d{4}-\\d{2}")
+str_view(spot_smaller$album_release_date, "\\d{4}-(\\d{2})-\\1") #interesting
+
+letters
+
+str_length(letters)
+str_length(NA)
+str_length(factor("abc"))
+str_length(c("i", "like", "programming", NA))
 ```
 
 **Use at least 1 repetition symbol when solving 8-10 below**
@@ -234,21 +372,72 @@ str_view(spot_smaller$album_release_date, "\\d{4}-\\d{2}")
     addition to "BEYONC" and "II"). That is, pick up strings where there
     might be a period between capital letters.
 
+```{r}
+#| eval: false
+str_view(spot_smaller$album_name, "[A-Z]\\.?[A-Z]")
+```
+
+
 9.  Create some strings that satisfy these regular expressions and
     explain.
 
 -   `"^.*$"`
--   `"\{.+\}"`
+-   `"\\{.+\\}"`
+
+```{r}
+#| eval: false
+str_view("$uper", "^.*$")
+
+str_view("", "^.*$")
+```
+
+Here are the regular expression special characters that require an
+escape character (a preceding `\`): `^` `$` `.` `?` `*` `|` `+` `(` `)`
+`[` `{`
+
+```{r}
+#| eval: false
+str_view("{5}", "\\{.+\\}")
+
+str_view("{this one work!}", "\\{.+\\}")
+
+str_view("{this one does not work, because of the question mark!}", "\\{.?\\}")
+
+str_view("this one does not", "\\{.+\\}")
+
+str_view("hi", "\\{.+\\}")
+```
+
+double backslash... ESCAPE --> next character is the curly bracket. 
+That means we are escaping the curly bracket. 
+Why are we escaping it? Because the curly bracket is also a function to something else! We use curly bracket for repetition!
+So here, we are asking it to find an actual curly bracket
+Then the next thing is dot. Meaning, any THING! ANY CHARACTER!
+Then, the plus sign --> meaning "1 or more". 
+
 
 10. Create regular expressions to find all `stringr::words` that:
 
 -   Start with three consonants.
 -   Have two or more vowel-consonant pairs in a row.
 
+```{r}
+#| eval: false
+
+str_view(stringr::words, "^[^aeiuo]{3}")
+
+# has to be vowel then consonant pair
+str_view(stringr::words, "([aiueo][^aiueo]|[aiueo][^aiueo]){2,}")
+
+# either vowel-consonant or consonant-vowel pair.
+str_view(stringr::words, "([aiueo][^aiueo]|[^aiueo][aiueo]){2,}")
+```
+
+
 ## Useful functions for handling patterns
 
-str_extract() : extract a string that matches a pattern str_count() :
-count how many times a pattern occurs within a string
+str_extract() : extract a string that matches a pattern 
+str_count() : count how many times a pattern occurs within a string
 
 ```{r}
 str_extract(spot_smaller$album_release_date, "\\d{4}-\\d{2}")
@@ -265,10 +454,40 @@ spot_smaller |>
 11. In the spot_smaller dataset, how many words are in each title?
     (hint: `\\b`)
 
+```{r}
+#WORDS not ALPHABET...
+
+str_view(spot_smaller$title, "\\b[^ ]+\\b")
+
+spot_smaller |>
+  select(title) |>
+  mutate(n_words = str_count(title, "\\b[^ ][A-Za-z]+(\\.[A-Za-z]+)*('[A-Za-z]+)*\\b"))
+
+spot_smaller |>
+  select(title) |>
+  mutate(n_words = str_count(title, "\\b[^ \\d/]+\\b"))
+
+
+
+str_view(spot_smaller$title, "\\b[^ \\d/]+\\b")
+spot_smaller |>
+  select(title) |>
+  mutate(n_words = str_count(title, "\\b[^\\d/]+\\b"))
+
+
+#initial code
+spot_smaller |>
+  select(title) |>
+  mutate(n_words = str_count(title, "[^ ][A-Za-z]+"))
+
+str_view(sentences, "^She|He|It|They\\b")
+
+str_view(sentences, "^The\\b")
+str_subset(sentences, "^The")
+```
+
 12. In the spot_smaller dataset, extract the first word from every
-    title. Show how you would print out these words as a vector and how
-    you would create a new column on the spot_smaller tibble. That is,
-    produce this:
+    title. Show how you would print out these words as a vector and how you would create a new column on the spot_smaller tibble. That is, produce this:
 
 ```{r}
 # [1] "Hear"      "Run"       "Formation" "7/11"      "My"        "It's"     
@@ -293,19 +512,100 @@ Then this:
 #10 Runnin (with A$AP Rocky, A$AP Ferg & Nicki Minaj) Runnin    
 ```
 
+```{r}
+
+str_extract(spot_smaller$title, "(^\\b[A-Z][a-z]+\\b|^\\b[A-Z].+\\b|^\\b\\d.+\\b)")
+
+
+
+
+spot_smaller |>
+  select(title) |>
+  mutate(first_word = str_extract(title, "(^\\b[A-Z][a-z]+\\b|^\\b[A-Z].+\\b|^\\b\\d.+\\b)"))
+```
+
 13. Which decades are popular for playlist_names? Using the bigspotify
     dataset, try doing each of these steps one at a time!
 
--   filter the bigspotify dataset to only include playlists that include
-    something like "80's" or "00's" in their title.
--   create a new column that extracts the decade
--   use count to find how many playlists include each decade
--   what if you include both "80's" and "80s"?
--   how can you count "80's" and "80s" together in your final tibble?
+1.   filter the bigspotify dataset to only include playlists that include something like "80's" or "00's" in their title.
+2.  create a new column that extracts the decade
+3.  use count to find how many playlists include each decade
+
+4.  what if you include both "80's" and "80s"?
+5.  how can you count "80's" and "80s" together in your final tibble?
+
+
+```{r}
+view(bigspotify)
+
+#try
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "(\\d+['s]|\\d+'s)")) |>
+  print(n = Inf)
+
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "(\\d+['s]|\\d+'s)")) |>
+  mutate(decades = str_extract(playlist_name, "(\\d+'s|\\d+s|(\\d+s)-\\1)")) |>
+  print(n = Inf)
+
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "(\\d+['s]|\\d+'s)")) |>
+  mutate(decades = str_extract(playlist_name, "(\\d+'s|\\d+s|\\d+s-\\d+s)")) |>
+  print(n = Inf)
+
+
+#1
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "\\d+'s")) |>
+  print(n = Inf)
+
+#2
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "\\d+'s")) |>
+  mutate(decades = str_extract(playlist_name, "\\d+'s"),
+         decades = fct_recode(decades, "80's" = "808's",
+                              "00's" = "2000's")) |>
+  print(n = Inf)
+
+
+#3: I don't actually understand what the sentence wants so...
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "\\d+'s")) |>
+  mutate(decades = str_extract(playlist_name, "\\d+'s"),
+         decades = fct_recode(decades, "80's" = "808's",
+                              "00's" = "2000's")) |>
+  count(decades, playlist_name) |>
+  count(decades)
+
+#4 & #5
+bigspotify |>
+  select(playlist_name) |>
+  filter(str_detect(playlist_name, "(\\d+'s|\\d+s)")) |>
+  mutate(decades = str_extract(playlist_name, "(\\d+'s|\\d+s)"),
+         decades = fct_recode(decades, "80's" = "808's",
+                              "00's" = "2000's",
+                              "50's" = "1950s",
+                              "10's" = "2010s"),
+         decades = fct_collapse(decades, 
+                                "80's" = c("80's", "80s"),
+                                "90's" = c("90's", "90s"),
+                                "70's" = c("70's", "70s")
+                                )) |>
+  count(decades, playlist_name) |>
+  count(decades)
+
+```
 
 ## Grouping and backreferences
 
 ```{r}
+#| eval: false
 # find all fruits with repeated pair of letters.  
 fruit = stringr::fruit
 fruit
@@ -313,7 +613,27 @@ str_view(fruit, "(..)\\1", match = TRUE)
 
 # why does the code below add "pepper" and even "nectarine"?
 str_view(fruit, "(..)(.*)\\1", match = TRUE)
+# because of the (.*)! because that is saying that the (..) is followed by ANY CHARACTER 0 or more time... before repeating (..)
 ```
+
+str_view(fruit, "(..)\\1", match = TRUE)
+(..) any 2 characters
+\\1 repeating what we have established above.
+that's why we are getting "anan" "coco" "cucu" "juju" etc. 
+
+str_view(fruit, "(..)(.*)\\1", match = TRUE)
+(..) any 2 characters
+(.*) any character 0 or more times. 
+\\1 repeating our first position, which is the (..)
+
+So, for example 
+(.)(.)(..)\\2\\1
+1. (.) any character
+2. (.) any character again
+3. (..) two character 
+\\2 repeating THAT CHARACTER FROM POSITION 2
+\\1 repeating THAT CHARACTER FROM POSITION 1
+
 
 Tips with backreference:
 
@@ -323,6 +643,7 @@ Tips with backreference:
     references the second set of ()
 
 ```{r}
+#| eval: false
 x1 <- c("abxyba", "abccba", "xyaayx", "abxyab", "abcabc")
 str_view(x1, "(.)(.)(..)\\2\\1")
 str_view(x1, "(.)(.)(..)\\1\\2")
@@ -335,15 +656,43 @@ str_view(x1, "(.)(.)(.)\\1\\2\\3")
 -   `"(.)\\1\\1"`
 -   `"(.)(.)(.).*\\3\\2\\1"`
 
+For number 1, the expression will match one distinct character and repeat it twice (because we have two "\\1").
+Example: ooo
+
+
+For number 2, it will match a combination of three characters (as we have 3 "(.)", then the ".*" is saying that there will be any character 0 or more times then we are repeating that character from position 3, position 2, and position 1.
+Example: abchellocba
+
 Which words in `stringr::words` match each expression?
 
+```{r}
+#| eval: false
+str_view(stringr::words, "(.)\\1\\1")
+str_view(stringr::words, "(.)(.)(.).*\\3\\2\\1")
+```
+
+For the first one, none.
+For the second one, "paragraph".
+
 15. Construct a regular expression to match words in `stringr::words`
-    that contain a repeated pair of letters (e.g. “church” contains “ch”
-    repeated twice) but *not* match repeated pairs of numbers (e.g.
+    that contain a repeated pair of letters (e.g. “church” contains “ch” repeated twice) but *not* match repeated pairs of numbers (e.g.
     507-786-3861).
+
+```{r}
+str_subset(stringr::words, "([a-z]{2}).*\\1")
+
+str_view(words, "^(..).*\\1$")
+```
 
 16. Reformat the album_release_date variable in spot_smaller so that it
     is MM-DD-YYYY instead of YYYY-MM-DD. (Hint: str_replace().)
+
+```{r}
+spot_smaller |>
+  mutate(album_release_date = str_replace(album_release_date,
+      "(\\d{4})-(\\d{2})-(\\d{2})",
+      "\\2-\\3-\\1"))
+```
 
 17. BEFORE RUNNING IT, explain to your partner(s) what the following R
     chunk will do:
@@ -352,4 +701,11 @@ Which words in `stringr::words` match each expression?
 sentences |> 
   str_replace("([^ ]+) ([^ ]+) ([^ ]+)", "\\1 \\3 \\2") |> 
   head(5)
+
+sentences |> 
+  str_replace("([^ ]+) ([^ ]+) ([^ ]+)", "\\1 \\3 \\2") |> 
+  head(5)
+
 ```
+
+Will show the first five row. ([^ ]+) basically capturing word (or anything that is not a space). Then in the replacement argument, we swap the position of word 3 and 2.

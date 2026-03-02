@@ -198,6 +198,9 @@ vaccine_data |>
              y = median_un)) +
   geom_jitter(aes(color = n), height = 0.3, width = 0.0019) +
   geom_smooth(method = lm, se = FALSE)
+
+vaccine_data |> glimpse()
+
 ```
 
 
