@@ -13,7 +13,8 @@ library(tidyverse)
 library(dplyr)
 library(stringr)
 library(lubridate)
-(parsedate)
+library(tidytext)
+library(textdata)
 
 lipid_old <- read_csv("~/SDS264_S26/Project/MP1/abstracts.csv") # with Miscellaneous column
 lipid <- read_csv("~/SDS264_S26/Project/MP1/abstracts_lipid.csv") # without Miscellaneous column
@@ -71,18 +72,16 @@ lipid_new |>
     year = str_extract(date_published, "\\d{4}"),
     month = str_extract(date_published, "[A-Za-z]{3}"),
     day = str_extract(date_published, " \\d{1,2}$"),
-    abstract = 
-    num_contributors = 
-    first_author = 
-    abstract_length = str_length(abstract),
-    title_length = str_length(title),
-    
-  ) |>
-  view()
-
+    num_authors = str_count(authors, ","),
+    num_authors = num_authors + 1,
+    FA = str_extract(authors, "^[A-Z](\\w|-)* [A-Za-z]{1,}"),
+    FA_institution = str_remove(str_extract(author_information, "\\(1\\)[^\\(]*"), "\\(1\\)"),
+    abstract_words = str_count(abstract, "([^ ]+)"),
+    abstract_chr = str_length(abstract),
+    title_words = str_count(title, "([^ ]+)"),
+    title_length = str_length(title)) |>
+  select(!journal | !doi)
 ```
-
-
 
 #### Coding works
 ```{r}

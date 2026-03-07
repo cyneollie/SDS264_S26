@@ -1,0 +1,31 @@
+---
+title: "Budiyanto_MiniProject1"
+author: "Cynthia Budiyanto"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction and Rationale
+
+The prevalent undergoing research done in the Biology Department at St. Olaf specifically on Lipid Droplet in Tetrahymena thermophila has inspired the initiation of this project. Here I propose to investigate literatures on the general topic of "Lipid Droplet" or LD, which is known to be an important biomaker in many pathological diseases. Given their importance across many biological systems and the increasing amount of research tied to LDs, it is valuable and highly interesting for me to examine how research on lipid droplets has evolved over time and how knowledge within this field is being generated. 
+
+Inspired from "Literature Based Discovery" or LBD and the fact that researchers are always trying to be on top of new discoveries or new publications, I would like to see and uncover lipid droplet research trends, and other things associated with it (e.g. Who (is/are) the currently most active researchers for LDs research based on this dataset? What are the most frequent keywords appearing when we are exploring this particular research field?). Scientific literature is growing at an exponential rate causing researchers to become increasingly specialized, and making it difficult for researchers to stay current in even their narrow discipline. There is too much information for anyone to read, much less understand. This overwhelming volume of publications has led to specialized, non-interacting literatures, creating isolated knowledge in which discoveries in one specific area are not known by people who are doing research by the field next door. LBD has a goal of increasing interdisciplinary through prompt and more accessible information sharing, using the resources that are available out there without us realising it in order to increase the impact of scientific literature even further. LBD is then a necessary tool for facilitating research. LBD has led to countless discovery proposals ranging from treatments for cataracts, multiple sclerosis, and Parkinson’s Disease, to understanding and discovering new health benefits of curcumin, and potential treatments for cancer.
+
+In this data science project, I would not be carrying any sophisticated scientific analysis on LDs literature due to constraint in time and whatnot. However, I would have this personal motivation at the back of my head as I am going through this project, as something that I could potentially revisit for a larger project with more well-founded, clear, and impactful goals towards scientific discoveries and literacies. 
+
+## Webscraping and Data Production
+
+Pubmed is an openly accessible, free database which includes primarily the database of references and abstracts on life sciences and biomedical topics. Owing to that, I was able to webscrape their rich literary archives, specifically on Lipid Droplet. In order to do that, I used an automated protocol to specifically scrape Pubmed database created by the user erilu on [Github](https://github.com/erilu/pubmed-abstract-compiler). The protocol used python to automate the construction of the URLs associated with webscraping, execution of the "search" and "fetch" commands, and parse each part of the abstract (Authors, Journal, Date of publication, etc.) into a data file for further reproducible analysis. As a result from this programming script, each abstract from each scientific article can be analyzed to quickly extract numerical data or quantitative results.
+
+The python script that was run in R and established my datasets (abstracts.csv and abstracts_lipid.csv) can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_pyscript_webscrape.qmd)
+
+## Data Wrangling & Tidying
+
+Following a good data science workflow methodology, where one is supposed to do data wrangling in another document and then plugging it back in into a separate document designated for data analysis, the comlete data wrangling and tidying were done here. This can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_datawrangling.qmd). This document also contains the usage of str_functions and regular expressions. 
+
+## Text Analysis
+
+## Results
+
+## Conclusion and Future Projects

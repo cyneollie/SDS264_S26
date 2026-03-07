@@ -4,8 +4,6 @@ format: html
 editor: visual
 ---
 
-Pubmed is an openly accessible, free database which includes primarily the database of references and abstracts on life sciences and biomedical topics. Owing to that, I was able to webscrape their rich literary archives, specifically on Lipid Droplet. In order to do that, I used an automated protocol to specifically scrape Pubmed database created by the user erilu on [Github](https://github.com/erilu/pubmed-abstract-compiler). The protocol used python to automate the construction of the URLs associated with webscraping, execution of the "search" and "fetch" commands, and parse each part of the abstract (Authors, Journal, Date of publication, etc.) into a data file for further reproducible analysis. As a result from this programming script, each abstract from each scientific article can be analyzed to quickly extract numerical data or quantitative results.
-
 Below is the Python script running through R, with tweaking my term specifically to be "Lipid Droplet".
 
 ```{python}
