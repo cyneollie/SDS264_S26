@@ -47,8 +47,6 @@ multilanguage_fixed <- lipid_old |>
   filter(!is.na(doi)) |>
   filter(str_detect(author_information, "^A"))
 
-view(multilanguage_fixed)
-
 # Now that we have fixed that portion of the data frame, I will rejoin them with the rest of the data, and also fix miscellaneous formatting style from that lipid data frame. 
 
 lipid_new <- lipid |>
@@ -62,7 +60,7 @@ lipid_new <- lipid |>
 
 # Now that we have a cleaner dataset, I feel more comfortable with using more stringr functions.
 
-lipid_new |>
+lipidata <- lipid_new |>
   mutate(
     j_name = str_extract(journal, "^\\d*\\. [A-Za-z].*?\\."),
     j_name = str_replace(j_name, "^\\d*\\.", ""),
@@ -83,31 +81,8 @@ lipid_new |>
   select(!journal | !doi)
 ```
 
-#### Coding works
-```{r}
-lipid |>
-  filter()
-  filter(str_detect())
-```
-
 ### New dataframe after wrangling and tidying. 
 
 ```{r}
-write_csv(lipid, "~/Sds_164_J26/Prof/lipidframe.csv")
+write_csv(lipidata, "~/SDS264_S26/Project/MP1/lipidframe.csv")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
