@@ -1,0 +1,114 @@
+---
+title: "MP1_DataWrangling"
+author: "Cynthia Budiyanto"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+### Loading dataset
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(lubridate)
+(parsedate)
+
+lipid_old <- read_csv("~/SDS264_S26/Project/MP1/abstracts.csv") # with Miscellaneous column
+lipid <- read_csv("~/SDS264_S26/Project/MP1/abstracts_lipid.csv") # without Miscellaneous column
+```
+
+### Data wrangling
+
+Note: Purpose of the code chunks is given prior to the code lines. 
+
+```{r}
+
+# It came to my observation that there are 112 articles in which the "authors" column are shifted to the right, because the articles are written in other languages, and now the "authors" column contains information regarding what language the article was originally written in. The next column, which is the "authors information" column, contain the actual list of authors. The "abstract" column, then contains author information/origin, and so on. So we are going to fix that. 
+
+# There is also a row that does not have author information at all. We are going to remove that as well.
+
+multilanguage_fixed <- lipid_old |>
+  filter(Authors != "[No authors listed]") |>
+  filter(str_detect(Authors, "^\\[")) |>
+  select(!Authors) |>
+  mutate(authors = Author_Information,
+         author_information = Abstract,
+         abstract = DOI,
+         DOI = Misc) |>
+  rename_with(tolower, .cols = c(Journal, Title, DOI)) |>
+  select(journal, title, authors, author_information, abstract, doi) |>
+  
+# Removing some noticeable miscellaneous problems that will make later data processing easier
+  
+  mutate(title = str_remove_all(title, "\\[|\\]")) |>
+  filter(!is.na(doi)) |>
+  filter(str_detect(author_information, "^A"))
+
+view(multilanguage_fixed)
+
+# Now that we have fixed that portion of the data frame, I will rejoin them with the rest of the data, and also fix miscellaneous formatting style from that lipid data frame. 
+
+lipid_new <- lipid |>
+  rename_with(tolower, .cols = where(is.character)) |>
+  filter(!str_detect(authors, "^\\[")) |>
+  filter(!str_detect(journal, "RETRACTED ARTICLE")) |>
+  filter(str_detect(author_information, "^A")) |>
+  filter(!str_detect(abstract, "^Erratum")) |>
+  filter(!str_detect(abstract, regex("doi", ignore_case = TRUE))) |>
+  full_join(multilanguage_fixed)
+
+# Now that we have a cleaner dataset, I feel more comfortable with using more stringr functions.
+
+lipid_new |>
+  mutate(
+    j_name = str_extract(journal, "^\\d*\\. [A-Za-z].*?\\."),
+    j_name = str_replace(j_name, "^\\d*\\.", ""),
+    date_published = str_extract(journal, " \\d{4}.*\\d*;| \\d{4}.*\\d*\\.| \\d{4}.*\\d*:"),
+    date_published = str_replace(date_published, "(;|:|\\.).*", ""), # not parsed yet
+    author_information = str_remove(author_information, "Author information:"),
+    year = str_extract(date_published, "\\d{4}"),
+    month = str_extract(date_published, "[A-Za-z]{3}"),
+    day = str_extract(date_published, " \\d{1,2}$"),
+    abstract = 
+    num_contributors = 
+    first_author = 
+    abstract_length = str_length(abstract),
+    title_length = str_length(title),
+    
+  ) |>
+  view()
+
+```
+
+
+
+#### Coding works
+```{r}
+lipid |>
+  filter()
+  filter(str_detect())
+```
+
+### New dataframe after wrangling and tidying. 
+
+```{r}
+write_csv(lipid, "~/Sds_164_J26/Prof/lipidframe.csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

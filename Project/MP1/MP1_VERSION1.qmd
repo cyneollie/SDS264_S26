@@ -1,0 +1,53 @@
+---
+title: "Budiyanto_MiniProject1"
+author: "Cynthia Budiyanto"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction and Rationale
+
+The prevalent undergoing research done in the Biology Department at St. Olaf specifically on Lipid Droplet in Tetrahymena thermophila has inspired the initiation of this project. Here I propose to investigate literatures on the general topic of "Lipid Droplet", which is known to be 
+
+Inspired from "Literature Based Discovery" and the fact that researchers are always trying to be on top of new discoveries or new publications. I would like to see and uncover lipid droplet research trends, and other things associated with it (e.g. Who (is/are) the currently most active researchers for LDs research based on this dataset? What are the most frequent keywords appearing when we are exploring this particular research field?). Scientific literature is growing at an exponential rate causing researchers to become increasingly specialized, and making it difficult for researchers to stay current in even their narrow discipline. There is too much information for anyone to read, much less understand. This overwhelming volume of publications has led to specialized, non-interacting literatures, creating islands of knowledge in which discoveries in one area are not known outside of it. LBD seeks to build bridges between these islands, increasing interdisciplinary information sharing. As the scientific literature grows, LBD is becoming an increasingly necessary tool for facilitating research. LBD has led to countless discovery proposals ranging from treatments for cataracts, multiple sclerosis, and Parkinson’s Disease, to understanding and discovering new health benefits of curcumin, and potential treatments for cancer.
+
+
+## Webscraping and Data Production
+
+
+
+
+## Data Wrangling & Tidying
+
+
+
+
+
+## Text Analysis
+
+
+
+
+
+## Results
+
+
+
+
+
+## Conclusion and Future Projects
+
+
+
+
+
+
+
+
+
+
+
+
+
+
