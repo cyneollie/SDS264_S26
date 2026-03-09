@@ -1,30 +1,264 @@
 ---
 title: "Budiyanto_MiniProject1"
 author: "Cynthia Budiyanto"
-format: html
+format: pdf
 editor_options: 
   chunk_output_type: console
 ---
 
 ## Introduction and Rationale
 
-The prevalent undergoing research done in the Biology Department at St. Olaf specifically on Lipid Droplet in Tetrahymena thermophila has inspired the initiation of this project. Here I propose to investigate literatures on the general topic of "Lipid Droplet" or LD, which is known to be an important biomaker in many pathological diseases. Given their importance across many biological systems and the increasing amount of research tied to LDs, it is valuable and highly interesting for me to examine how research on lipid droplets has evolved over time and how knowledge within this field is being generated. 
+The prevalent undergoing research done in the Biology Department at St. Olaf specifically on Lipid Droplet in *Tetrahymena thermophila* has inspired the initiation of this project. Here I propose to investigate literature on the general topic of "Lipid Droplet" or LD, which is known to be an important biomaeker in many pathological diseases. Given their importance across many biological systems and the increasing amount of research tied to LDs, it is valuable and highly interesting for me to examine how research on lipid droplets has evolved over time and how knowledge within this field is being generated.
 
-Inspired from "Literature Based Discovery" or LBD and the fact that researchers are always trying to be on top of new discoveries or new publications, I would like to see and uncover lipid droplet research trends, and other things associated with it (e.g. Who (is/are) the currently most active researchers for LDs research based on this dataset? What are the most frequent keywords appearing when we are exploring this particular research field?). Scientific literature is growing at an exponential rate causing researchers to become increasingly specialized, and making it difficult for researchers to stay current in even their narrow discipline. There is too much information for anyone to read, much less understand. This overwhelming volume of publications has led to specialized, non-interacting literature, creating isolated knowledge in which discoveries in one specific area are not known by people who are doing research by the field next door. LBD has a goal of increasing interdisciplinary through prompt and more accessible information sharing, using the resources that are available out there without us realising it in order to increase the impact of scientific literature even further. LBD is then a necessary tool for facilitating research. LBD has led to countless discovery proposals ranging from treatments for cataracts, multiple sclerosis, and Parkinson’s Disease, to understanding and discovering new health benefits of curcumin, and potential treatments for cancer.
+Inspired from "Literature Based Discovery" or LBD and the fact that researchers are always trying to be on top of new discoveries or new publications, I would like to see and uncover lipid droplet research trends, and other things associated with it (e.g. Who (is/are) the currently most active researchers for LDs research based on this data set? What are the most frequent keywords appearing when we are exploring this particular research field?). Scientific literature is growing at an exponential rate causing researchers to become increasingly specialized, and making it difficult for researchers to stay current in even their narrow discipline. There is too much information for anyone to read, much less understand. This overwhelming volume of publications has led to specialized, non-interacting literature, creating isolated knowledge in which discoveries in one specific area are not known by people who are doing research by the field next door. LBD has a goal of increasing interdisciplinary through prompt and more accessible information sharing, using the resources that are available out there without us realising it in order to increase the impact of scientific literature even further. LBD is then a necessary tool for facilitating research. LBD has led to countless discovery proposals ranging from treatments for cataracts, multiple sclerosis, and Parkinson’s Disease, to understanding and discovering new health benefits of curcumin, and potential treatments for cancer.
 
-In this data science project, I would not be carrying any sophisticated scientific analysis on LDs literature due to constraint in time and whatnot. However, I would have this personal motivation at the back of my head as I am going through this project, as something that I could potentially revisit for a larger project with more well-founded, clear, and impactful goals towards scientific discoveries and literacy. Thus, this project will be more focused in data exploratory and finding out what one can do with a compilation of scientific literature made into a dataset. 
+In this data science project, I would not be carrying any sophisticated scientific analysis on LDs literature due to constraint in time and whatnot. However, I would have this personal motivation at the back of my head as I am going through this project, as something that I could potentially revisit for a larger project with more well-founded, clear, and impactful goals towards scientific discoveries and literacy. Thus, this project will be more focused in data exploratory and finding out what one can do with a compilation of scientific literature made into a data set.
 
 ## Webscraping and Data Production
 
-Pubmed is an openly accessible, free database which includes primarily the database of references and abstracts on life sciences and biomedical topics. Owing to that, I was able to webscrape their rich literary archives, specifically on Lipid Droplet. In order to do that, I used an automated protocol to specifically scrape Pubmed database created by the user erilu on [Github](https://github.com/erilu/pubmed-abstract-compiler). The protocol used python to automate the construction of the URLs associated with webscraping, execution of the "search" and "fetch" commands, and parse each part of the abstract (Authors, Journal, Date of publication, etc.) into a data file for further reproducible analysis. As a result from this programming script, each abstract from each scientific article can be analyzed to quickly extract numerical data or quantitative results.
+PubMed is an openly accessible, free database which includes primarily the database of references and abstracts on life sciences and biomedical topics. Owing to that, I was able to webscrape their rich literary archives, specifically on Lipid Droplet. In order to do that, I used an automated protocol to specifically scrape PubMed database created by the user *erilu* on [Github](https://github.com/erilu/pubmed-abstract-compiler). The protocol used python to automate the construction of the URLs associated with webscraping, execution of the "search" and "fetch" commands, and parse each part of the abstract (Authors, Journal, Date of publication, etc.) into a data file for further reproducible analysis. As a result from this programming script, each abstract from each scientific article can be analyzed to quickly extract numerical data or quantitative results.
 
-The python script that was run in R and established my datasets (abstracts.csv and abstracts_lipid.csv) can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_pyscript_webscrape.qmd)
+The python script that was run in R and established my data sets (abstracts.csv and abstracts_lipid.csv) can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_pyscript_webscrape.qmd)
 
 ## Data Wrangling & Tidying
 
-Following a good data science workflow methodology, where one is supposed to do data wrangling in another document and then plugging it back in into a separate document designated for data analysis, the comlete data wrangling and tidying were done here. This can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_datawrangling.qmd). This document also contains my usage of str_functions and regular expressions. 
+Following a good data science workflow methodology, where one is supposed to do data wrangling in another document and then plugging it back in into a separate document designated for data analysis, the complete data wrangling and tidying can be found in my MP1 Github repository [here.](https://github.com/cyneollie/SDS264_S26/blob/4c9311c8efb98c90fc695cc5d53bbe9890fea337/Project/MP1/MP1_datawrangling.qmd) This document also contains my main usage of str_functions and regular expressions.
 
 ## Text Analysis
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(igraph)
+library(ggraph)
+
+lipidframe <- read_csv("~/SDS264_S26/Project/MP1/lipidframe.csv")
+view(lipidframe)
+```
+
+```{r}
+# Let's see who is the major "First Author" in this specific data set.
+lipidframe |>
+  drop_na(FA) |>
+  count(FA) |>
+  arrange(desc(n)) |>
+  slice_head(n = 5)
+
+# That's a whopping number of observations for some people! Let's check their full details.
+lipidframe |>
+  filter(FA %in% c("Wang Y", "Zhang Y", "Li Y", "Li X", "Liu Y")) |>
+  view()
+
+# Turns out that they are all very common names, and after observing, we can almost conclusively say that each individual there is different, and they come from different institutions. So now, I check for a combination of author-institution.
+
+top_authors <- lipidframe |>
+  group_by(FA, FA_institution) |>
+  summarise(freq = n(), .groups = "drop") |>
+  slice_max(freq, n = 10)
+
+# Good enough for me! Even though I believe we missed a couple authors here and there, because of the enormous inconsistency in how the institution was reported in literature publications, we received some good results, and we can focus on this for our text analysis. 
+
+# I also asked but the "Top 10" but R gives me back 13 rows because of ties. But it's not a big deal! We can work with this. 
+
+# Another thing we could investigate through the same way is the publication journals.
+top_journals <- lipidframe |>
+  group_by(j_name) |>
+  summarise(freq = n()) |>
+  slice_max(freq, n = 10)
+
+# Establishing my specific stopwords
+
+lipidword <- c("lipid", "lipids", "cell", "cells", "droplet", "droplets", "study", "scientific", "high", "fatty", "acid", "acids", "proteins", "study", "increased", "induced", "levels", "expression", "potential", "treatment", "related", "significantly", "accumulation", "lds", "ld", "role", "showed", "related", "specific", "effect", "effects", "ups", "results", "analysis", "revealed", "human", "1", "2", "3", "group", "formation", "reduced", "function", "decreased", "model", "fat", "compared", "based", "size", "size", "stability", "activity", "findings", "mechanisms", "energy", "exposure", "content", "properties", "development", "higher", "metabolic", "disease", "membrane", "diet", "red", "white", "recovery", "cellular", "emulsion", "molecular", "identified", "compounds", "composition", "mature", "site", "extracts", "significant", "including")
+
+lexicon <-  rep("custom", times = length(word))
+
+# Create a dataframe from the two vectors above
+mystopwords <- data.frame(lipidword, lexicon)
+names(mystopwords) <- c("word", "lexicon")
+
+
+# Add the dataframe to stop_words df that exists in the library stopwords
+stop_words_fix <-  dplyr::bind_rows(stop_words, mystopwords)
+View(stop_words_fix)
+
+# Based on ALL articles from the scraped data set
+lipidframe |>
+  select(title, abstract) |>
+  mutate(title = str_to_lower(title),
+         abstract = str_to_lower(abstract)) |>
+  unnest_tokens(output = word, input = abstract) |>
+  anti_join(stop_words_fix) |>
+  count(word, sort = TRUE) |>
+  filter(word != "NA") |>
+  slice_max(n, n = 20) |>
+  ggplot(aes(fct_reorder(word, n), n)) +
+  geom_col() +
+  coord_flip()
+
+# Based on the TOP 13 contributors
+lipidframe |>
+  semi_join(top_authors, by = c("FA", "FA_institution")) |>
+  select(title, abstract) |>
+  mutate(title = str_to_lower(title),
+         abstract = str_to_lower(abstract)) |>
+  unnest_tokens(output = word, input = abstract) |>
+  anti_join(stop_words_fix) |>
+  count(word, sort = TRUE) |>
+  filter(word != "NA") |>
+  slice_max(n, n = 20) |>
+  ggplot(aes(fct_reorder(word, n), n)) +
+  geom_col() +
+  coord_flip()
+
+# Based on the TOP 10 journals
+lipidframe |>
+  semi_join(top_journals, by = c("j_name")) |>
+  select(title, abstract) |>
+  mutate(title = str_to_lower(title),
+         abstract = str_to_lower(abstract)) |>
+  unnest_tokens(output = word, input = abstract) |>
+  anti_join(stop_words_fix) |>
+  count(word, sort = TRUE) |>
+  filter(word != "NA") |>
+  slice_max(n, n = 20) |>
+  ggplot(aes(fct_reorder(word, n), n)) +
+  geom_col() +
+  coord_flip()
+
+```
+
+Simple one-word analysis might be interesting in the beginning, but we can quickly realise that it is too hard to infer anything from it. Therefore, what we will do next is bigram or two-words  
+
+```{r}
+# Based on ALL articles from the scraped data set
+
+ldf_bigram <- lipidframe |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 2) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2)) |>
+  unite(bigram, word1, word2, sep = " ")
+
+ldf_bigram |>
+  graph_from_data_frame() |>
+  ggraph(layout = "fr") +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+  
+
+ldf_trigram <- lipidframe |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 3) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2", "word3"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word,
+         !word3 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2) & !is.na(word3)) |>
+  unite(bigram, word1, word2, word3, sep = " ")
+
+ldf_trigram
+
+# Based on the TOP 13 contributors
+topcont_bigram <- lipidframe |>
+  semi_join(top_authors, by = c("FA", "FA_institution")) |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 2) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2)) |>
+  unite(bigram, word1, word2, sep = " ")
+
+topcont_bigram
+
+topcont_trigram  <- lipidframe |>
+  semi_join(top_authors, by = c("FA", "FA_institution")) |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 3) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2", "word3"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word,
+         !word3 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2) & !is.na(word3)) |>
+  unite(bigram, word1, word2, word3, sep = " ")
+
+topcont_trigram
+
+# Based on the TOP 10 journals
+topj_bigram <- lipidframe |>
+  semi_join(top_journals, by = c("j_name")) |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 2) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2)) |>
+  unite(bigram, word1, word2, sep = " ")
+
+topj_bigram
+
+topj_trigram  <- lipidframe |>
+  semi_join(top_journals, by = c("j_name")) |>
+  semi_join(top_authors, by = c("FA", "FA_institution")) |>
+  unnest_tokens(bigram, abstract, token = "ngrams", n = 3) |>
+  filter(bigram != "NA") |>
+  filter(!str_detect(bigram, "^\\d")) |>
+  count(bigram, sort = TRUE) |>
+  separate(bigram, c("word1", "word2", "word3"), sep = " ") |>
+  filter(!word1 %in% stop_words_fix$word,
+         !word2 %in% stop_words_fix$word,
+         !word3 %in% stop_words_fix$word) |>
+  filter(!is.na(word1) & !is.na(word2) & !is.na(word3)) |>
+  unite(bigram, word1, word2, word3, sep = " ")
+
+topj_trigram
+
+```
+
+
+We have got the relevant two-words and three-words combination. Now, it is time to visualise these combinations using a network graph. 
+
+library(igraph)
+
+# filter for only relatively common combinations
+bigram_graph <- bigrams_filtered |>
+  filter(n > 10) |>
+  graph_from_data_frame()
+
+bigram_graph
+
+# Use ggraph to convert into a network plot
+set.seed(2017)
+
+ggraph(bigram_graph, layout = "fr") +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+
+# polish the graph
+set.seed(2020)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+
+ggraph(bigram_graph, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
 
 ## Results
 
