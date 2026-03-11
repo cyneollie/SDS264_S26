@@ -1,7 +1,7 @@
 ---
 title: "Budiyanto_MiniProject1"
 author: "Cynthia Budiyanto"
-format: pdf
+format: html
 editor_options: 
   chunk_output_type: console
 ---
@@ -53,7 +53,8 @@ lipidframe |>
 #| echo: false
 # That's a whopping number of observations for some people! Let's check their full details.
 lipidframe |>
-  filter(FA %in% c("Wang Y", "Zhang Y", "Li Y", "Li X", "Liu Y"))
+  filter(FA %in% c("Wang Y", "Zhang Y", "Li Y", "Li X", "Liu Y")) |>
+  select(FA, FA_institution)
 ```
 
 Turns out that many of them are all very common names, and after observing, we can almost conclusively say that each individual there is different, and they come from different institutions. So now, I check for a combination of author-institution.
@@ -67,6 +68,12 @@ top_authors <- lipidframe |>
 
 # I asked for the "Top 10" but R gives me back 13 rows because of ties. 
 # But it's not a big deal! We can work with this.
+# We can also do the same thing with journals
+
+top5_journals <- lipidframe |>
+  group_by(j_name) |>
+  summarise(freq = n()) |>
+  slice_max(freq, n = 5)
 ```
 
 Good enough for me! Even though I believe we missed a couple authors here and there, because of the enormous inconsistency in how the institution was reported in literature publications, we received some good results, and we can focus on this for our text analysis.
@@ -122,9 +129,9 @@ lipidframe |>
   geom_col() +
   coord_flip()
 
-# Based on the TOP 10 journals
+# Based on the TOP 5 journals
 lipidframe |>
-  semi_join(top_journals, by = c("j_name")) |>
+  semi_join(top5_journals, by = c("j_name")) |>
   select(title, abstract) |>
   mutate(title = str_to_lower(title),
          abstract = str_to_lower(abstract)) |>
@@ -213,8 +220,7 @@ ldf_bigram |>
   geom_edge_fan(aes(alpha = after_stat(index)), show.legend = FALSE) + 
   geom_node_point(color = "steelblue", size = 5) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
-  theme_graph(base_family = "Arial Narrow", base_size = 11, background = "#C7DDF5", border = TRUE, plot_margin = margin(25, 25, 25, 45)) +
-  labs(title = "")
+  theme_graph(base_size = 11, background = "#C7DDF5", border = TRUE, plot_margin = margin(25, 25, 25, 45))
 ```
 
 ```{r}
@@ -227,8 +233,7 @@ ldf_trigram |>
   geom_edge_fan(aes(alpha = after_stat(index)), show.legend = FALSE) + 
   geom_node_point(color = "steelblue", size = 5) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
-  theme_graph(base_family = "Arial Narrow", base_size = 11, background = "#C7DDF5", border = TRUE, plot_margin = margin(25, 25, 25, 45)) +
-  labs(title = "")
+  theme_graph(base_size = 11, background = "#C7DDF5", border = TRUE, plot_margin = margin(25, 25, 25, 45))
 ```
 
 Another interesting analysis we can do is finding tf-idf statistics. It is highly useful in the application of search engines, as this is the statistics behind ranking document in relevance to a query. Through this statistics, we can identify the most descriptive words in a document. In this case, I would try to find the important words for the content of Top 5 Journal Publishers for LD research. In this case, tf-idf will find the important words of each journal by decreasing the weight for commonly used words and increasing the weight for words that are not used very much in a collection of articles  We want to find words that may or may not define one journal as opposed to others.
@@ -292,13 +297,11 @@ lipidframe |>
   facet_wrap(~ j_name, scales = "free")
 ```
 
-
 ## Results
 
 Interestingly, there are many instances where word combinations such as 'remain elusive', 'remain poorly understood', 'remain unclear' score pretty high in terms of the number of occurrences. As this was not the kind of term combination I was looking for, coming across this phrase across different categories was definitely unexpected yet evoking another realisation that there are still many things we do not not about the mechanisms or LDs despite its important function and despite the whopping number of scientific articles available for it. This makes text analysis such as this even more important, because only through this way we could provide communication bridges between authors investigating the same niche problem, which otherwise would be impossible due the amount of articles available online. Scientists could definitely meet in conferences, but distance and cost aspects are constraints that sometimes come in between in this valuable knowledge sharing. 
 
 When looking at the list of common two or three words combination, I saw many combinations that include "strange", "unfamiliar", and "improper" words, such as "clo pxgs" and "tpa cyp". While at first they might seem abstract and irrelevant for people outside of the field, I reckon how they might be a name that scientists created for protein or any important part of the research methodology. Turns out, "clo pxgs" is the name of the protein sitting outside of the LD surface and "tpa cyp" is a name of fluorescent dye used for tracking LDs in research. Even though these terms feel distant at first and it is hard to understand directly what and why it is correlated with LD, with some quick google search or filtering in my data set, I was able to know what kind of LD research these keywords are associated with. I understand as well that these primary analysis might not be the best for people outside of the science field and that is why the goal of this kind of text analysis is very specific, which is to unpack various LD research findings. 
-
 
 ## Conclusion and Future Projects
 
