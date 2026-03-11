@@ -78,7 +78,7 @@ top5_journals <- lipidframe |>
 
 Good enough for me! Even though I believe we missed a couple authors here and there, because of the enormous inconsistency in how the institution was reported in literature publications, we received some good results, and we can focus on this for our text analysis.
 
-Note: The behind-the-scene codes can be found in my Github repository.  
+Note: The behind-the-scene codes can be found in [my Github repository](https://github.com/cyneollie/SDS264_S26/blob/a8b60efb632c3eaffc6b2d40e292885a9c1590a3/Project/MP1/MP1.qmd).  
 
 ```{r}
 #| include: false
