@@ -1,0 +1,232 @@
+---
+title: "Knowledge Quiz 2"
+subtitle: "Cynthia Budiyanto"
+format:
+  pdf: default
+editor_options: 
+  chunk_output_type: console
+---
+
+Guidelines: 
+
+- No consulting with anyone else (other than clarification questions from Professor Roith)
+- You may use only materials from this class (our class webpage, links on Moodle, our 3 online textbooks, files posted to the RStudio server)
+- No online searches or use of large language models like ChatGPT
+
+Pledge: 
+
+I pledge my honor that on this quiz I have neither given nor received assistance not explicitly approved by the professor and that I am aware of no dishonest work.
+
+- type your name here to acknowledge the pledge: Cynthia Budiyanto
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(nycflights13)
+```
+
+
+1. Here's is a crazy list that tells you some stuff about data science.  Give code that will produce **exactly** the following outputs. (There are four parts to this question.)
+
+```{r}
+kq2_data <- list(
+  DRY = c("Do not", "Repeat", "Yourself"),
+  knowledge = c("Knowledge", "is", "Power"),
+  nyc = flights,
+  integers = 1:25,
+  doubles = sqrt(1:25),
+  toppings = list(sauce = c("marinara", "bbq", "creamy garlic"),
+               cheese = c("mozzarella", "goat", "feta"),
+               meat = c("pepperoni", "sausage", "chicken", "none"),
+               veggie = c("peppers", "onions", "mushrooms", "pineapple"),
+               hold = "no"),
+  lostpts_to_perc = cbind(pts_lost = 0:50, 
+                          perc = (50 - 0:50) / 50)
+)
+
+str(kq2_data)
+```
+
+a) 
+
+[1] "Power"     "is"        "Knowledge"
+
+```{r}
+kq2_data[[2]][c(3,2,1)]
+```
+
+b) 
+# A tibble: 6 × 3
+# Groups:   dest [1]
+  dest  carrier mean_arr_delay
+  <chr> <chr>            <dbl>
+1 MSP   9E                8.09
+2 MSP   DL                4.04
+3 MSP   EV               10.5 
+4 MSP   MQ                9.56
+5 MSP   OO               -2   
+6 MSP   UA               -5.5 
+
+```{r}
+kq2_data[[3]] |>
+  select(dest, carrier, arr_delay) |>
+  filter(dest == "MSP") |>
+  filter(!is.na(arr_delay)) |>
+  group_by(dest, carrier) |>
+  summarise(mean_arr_delay = mean(arr_delay))
+```
+
+c) Note: It must be one string and you must subset from kq2_data for the words "bbq", "goat", "chicken", and "mushroom" 
+
+[1] "Give me a bbq pizza with goat cheese, chicken, and mushrooms."
+
+```{r}
+# Try 1
+
+b <- kq2_data[[6]][[1]][2] #bbq
+
+g <- kq2_data[[6]][[2]][2] #goat
+
+c <- kq2_data[[6]][[3]][3] #chicken
+
+m <- kq2_data[[6]][[4]][3] #mushrooms
+
+str_glue(
+  "[1] ",
+  "\"",
+  "Give me a {b} ",
+  "pizza with {g} ",
+  "cheese, {c}",
+  ", and {m}",
+  ".\""
+)
+
+
+#Try 2
+
+mystrings <- c(f1 = "Give me a", f2 = "pizza with", f3 = "cheese,", f4 = ", and")
+
+answer <- c(mystrings[1], kq2_data[[6]][[1]][2], mystrings[2], kq2_data[[6]][[2]][2], mystrings[3], kq2_data[[6]][[3]][3], mystrings[4], kq2_data[[6]][[4]][3])
+
+```
+
+d) 
+
+[1] 10.0  0.8
+
+```{r}
+as.numeric(kq2_data[[7]][11,])
+```
+
+
+2. Write a function called `test_genre_popularity()` that produces a single ggplot. It should allow a user to input:
+
+  1) a tibble
+  2) two song genres
+  3) and a plot option to create either a boxplot or faceted histograms
+  
+The title of your plot should indicate the two genres being compared. done
+
+The subtitle should provide the *unique* test statistic and p-value for the specific genres being used, these values should change in the subtitle when you use different genres in the function input 
+
+(Hint: the `t.test()` function will automatically calculate these numbers). 
+
+
+Finally, your function should return an error when the user provides any plot option other than "boxplot" or "histogram". done
+
+
+See the image KQ2_plot.png for examples of what the function should output.
+
+```{r}
+bigspotify <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv')
+
+bigspotify
+
+
+
+newbs <- bigspotify |>
+  filter(playlist_genre %in% c("rap", "rock"))
+
+stats <- t.test(track_popularity ~ playlist_genre, data = newbs)
+  
+str(stats)
+stats[[1]]
+
+```
+
+```{r}
+#| error: TRUE
+
+test_genre_popularity <- function(df, genre1, genre2, plot) {
+  twogenresdf <- df |>
+    filter(playlist_genre %in% c( {{ genre1 }}, {{ genre2 }} )) # since doing t.test must have two levels of grouping factor
+  stats <- t.test(track_popularity ~ playlist_genre, data = twogenresdf) # cant pipe t.test
+  if (!(plot %in% c("boxplot", "histogram"))) {
+  stop("Please use boxplot or histogram as the plotting option")
+    }
+  if (plot == "boxplot") {
+  ggplot(twogenresdf, aes(x = playlist_genre, y = track_popularity)) +
+      geom_boxplot() +
+      labs(
+      title = paste("Comparing", genre1, "and", genre2, "genres by popularity."),
+      subtitle = paste("Two sample t-test for difference in mean popularity scores: T = ", stats[[1]], "and p-value = ", stats[[3]]))
+  }
+  else if (plot == "histogram") {
+  ggplot(twogenresdf, aes(x = track_popularity)) +
+      geom_histogram() +
+      facet_wrap(~playlist_genre) +
+      labs(
+      title = paste("Comparing", genre1, "and", genre2, "genres by popularity."),
+      subtitle = paste("Two sample t-test for difference in mean popularity scores: T = ", stats[[1]], "and p-value = ", stats[[3]]))
+  }
+}
+
+
+test_genre_popularity(df = bigspotify, 
+                      genre1 = "rap", 
+                      genre2 = "rock", 
+                      plot = "boxplot")
+
+test_genre_popularity(df = bigspotify, 
+                      genre1 = "rap", 
+                      genre2 = "rock", 
+                      plot = "density")
+```
+
+
+3. One of the harder concepts in statistics is the understanding of what the percentage in a confidence interval really means. Many introductory students believe that 95% confidence is a statement about the likelihood of the population parameter to be within the interval bounds. While not totally off-base, a better way to think about this is that if we take 1000 of different samples we expect around 950 of those samples to create 95% CIs that contain the true population parameter. Let's explore this.
+
+Write a for loop that takes 10,000 samples of size 45 from a normal distribution with a true population mean of 25 and a true standard deviation of 4.  done
+
+Calculate the lower bound and upper bound of a 95% confidence interval for the mean using each sample. done
+
+Check to see what proportion of simulated samples actually contain 25. (Spoiler - it should be close to 0.95)
+
+Here are a couple hints and reminders:
+
+- `rnorm(n = 20, mean = 0, sd = 1)` will generate a random sample of size 20 from a Normal distribution with mean 0 and standard deviation 1.
+- The equation for a 95% confidence interval is the sample mean plus/minus 1.96 times sample standard deviation divided by the square root of sample size.
+
+$$\bar{x} \pm 1.96 \times \frac{s}{\sqrt{n}}$$
+- The mean of a vector of logicals will give you a proportion.
+
+
+```{r}
+
+ci <- vector("logical", 10000)
+for (i in 1:10000) {
+  r_sample <- rnorm(n = 45, mean = 25, sd = 4)
+  s_mean <- mean(r_sample)
+  s_sd <- sd(r_sample)
+  lower_ci <- s_mean - 1.96 * (s_sd / sqrt(45))
+  upper_ci <- s_mean + 1.96 * (s_sd / sqrt(45))
+  ci[i] <- (lower_ci <= 25) & (upper_ci >= 25)
+}
+
+mean(ci)
+```
+
+
+
